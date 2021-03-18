@@ -7,7 +7,7 @@ class TwitterClient(object):
 	'''
 	Generic Twitter Class for sentiment analysis.
 	'''
-	def _init_(self):
+	def __init__(self):
 		'''
 		Class constructor or initialization method.
 		'''
