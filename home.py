@@ -1,7 +1,7 @@
 import tkinter
 from tkinter import *
 from PIL import ImageTk,Image
-
+import graph
 
 def head():
     headf = Frame(window, bg="red",height=120, width=1000)
@@ -49,6 +49,8 @@ def generatetwitterf():
     Label(twitterf, text="Enter No of Tweets: ", font=("Arial", 18)).place(x=120, y=200)
     tweetsentry = tkinter.Entry(twitterf, font=("Arial", 18))
     tweetsentry.place(x=380, y=200)
+
+    #B = Button(tw, text="Hello", command=helloCallBack)
 
 
 def generatetrendsf():
