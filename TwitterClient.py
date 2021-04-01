@@ -99,3 +99,18 @@ class TwitterClient(object):
 			# print error (if any)
 			print("Error : " + str(e))
 
+
+class twitterObj:
+	def __init__(self, name, number):
+		self.name=name
+		self.number=number
+
+		api = TwitterClient()
+		self.tweets = api.get_tweets(query=name, count=number)
+
+		# picking positive tweets from tweets
+		self.ptweets = [tweet for tweet in self.tweets if tweet['sentiment'] == 'positive']
+		# picking negative tweets from tweets
+		self.ntweets = [tweet for tweet in self.tweets if tweet['sentiment'] == 'negative']
+		# percentage of neutral tweets
+		self.otweets = [tweet for tweet in self.tweets if tweet['sentiment'] == 'neutral']

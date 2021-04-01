@@ -103,7 +103,7 @@ def main():
 	# creating object of TwitterClient Class
 	api = TwitterClient()
 	# calling function to get tweets
-	print("Enter the keword for sentimental analysis")
+	print("Enter the keyword for sentimental analysis")
 	s=input()
 	print("Enter the number of tweets")
 	number=(int(input()))

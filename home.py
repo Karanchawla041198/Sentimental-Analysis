@@ -2,6 +2,7 @@ import tkinter
 from tkinter import *
 from PIL import ImageTk,Image
 import graph
+from TwitterClient import *
 
 def head():
     headf = Frame(window, bg="red",height=120, width=1000)
@@ -42,6 +43,9 @@ def generatetwitterf():
     #photo = PhotoImage(file=r"twitter-icon.png")
     #Label(twitterf, image=photo).place(x=150, y=200)
 
+    global keywordentry
+    global tweetsentry
+
     Label(twitterf, text="Enter Keyword: ", font=("Arial", 18)).place(x=120, y=150)
     keywordentry = tkinter.Entry (twitterf,font=("Arial", 18))
     keywordentry.place(x=380, y=150)
@@ -50,13 +54,23 @@ def generatetwitterf():
     tweetsentry = tkinter.Entry(twitterf, font=("Arial", 18))
     tweetsentry.place(x=380, y=200)
 
-    #B = Button(tw, text="Hello", command=helloCallBack)
-
+    B = Button(twitterf, text="Get Tweets", font=("Arial", 18), command=generateObj)
+    B.place(x=300, y=280)
 
 def generatetrendsf():
     trendf = Frame(window, bg="green", height=580, width=820)
     trendf.place(x=180, y=120)
     Label(trendf, text="This is Trend page").place(x=0, y=0)
+
+
+def generateObj():
+    name = keywordentry.get()
+    number = int(tweetsentry.get())
+    global obj
+    obj = twitterObj(name, number)
+    print(obj.ptweets)
+    print(obj.ntweets)
+    print(obj.otweets)
 
 
 window = tkinter.Tk()
