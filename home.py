@@ -36,6 +36,7 @@ def generateaboutf():
     Label(aboutf, text="This is About page").place(x=0, y=0)
 
 def generatetwitterf():
+    global twitterf
     twitterf = Frame(window, bg="grey", height=580, width=820)
     twitterf.place(x=180, y=120)
     Label(twitterf, text="This is Twitter page").place(x=0, y=0)
@@ -65,9 +66,16 @@ def generatetrendsf():
 
 def generateObj():
     name = keywordentry.get()
-    number = int(tweetsentry.get())
+    number = tweetsentry.get()
+    statement=Label(twitterf, text="", font=("Arial", 11))
+    if name=="" or number=="":
+        statement=Label(twitterf, text="Please Enter All the values    ", font=("Arial", 11)).place(x=300,y=250)
+        return
+
+    number=int(number)
     global obj
     obj = twitterObj(name, number)
+    statement = Label(twitterf, text="Tweets Successfully Fetched", font=("Arial", 11)).place(x=300,y=250)
     print(obj.ptweets)
     print(obj.ntweets)
     print(obj.otweets)
