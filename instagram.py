@@ -6,10 +6,16 @@ loader = Instaloader()
 profile = Profile.from_username(loader.context, target_profile)
 
 num_followers = profile.followers
-num_following=profile.biography
+
 x=profile.full_name
-print(num_following)
+print(target_profile)
+print(profile.full_name)
+print(profile.biography)
+print(profile.followees)
 print(num_followers)
+print(profile.get_profile_pic_url())
+print(profile.business_category_name)
+print(profile.mediacount)
 total_num_likes = 0
 total_num_comments = 0
 total_num_posts = 0
