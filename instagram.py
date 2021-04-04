@@ -1,4 +1,4 @@
-target_profile ="charchil99"
+target_profile ="thebetterindia"
 
 from instaloader import Instaloader, Profile
 loader = Instaloader()
