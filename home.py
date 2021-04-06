@@ -3,6 +3,8 @@ from tkinter import *
 from PIL import ImageTk,Image
 import graph
 from TwitterClient import *
+from graph import *
+import pickle
 
 def head():
     headf = Frame(window, bg="red",height=120, width=1000)
@@ -79,6 +81,82 @@ def generateObj():
     print(obj.ptweets)
     print(obj.ntweets)
     print(obj.otweets)
+    filename = 'tweets'
+    outfile = open(filename, 'wb')
+    pickle.dump(obj.tweets, outfile)
+    outfile.close()
+    butpos = Button(twitterf, text="Positive Tweets", font=("Arial", 18), command=seepos).place(x=100, y=350)
+    butneg = Button(twitterf, text="Negative Tweets", font=("Arial", 18), command=seeneg).place(x=300, y=350)
+    butot = Button(twitterf, text="Neutral Tweets", font=("Arial", 18), command=seeneutral).place(x=520, y=350)
+    butline = Button(twitterf, text="Line Graph", font=("Arial", 18), command=gengraph).place(x=150, y=450)
+    butpie = Button(twitterf, text="Pie Chart", font=("Arial", 18), command=seepie).place(x=500, y=450)
+
+
+def seepie():
+    p=pie(len(obj.ptweets),len(obj.ntweets),len(obj.ntweets))
+
+
+def gengraph():
+    g=graph()
+    g.showgraph()
+
+def seepos():
+    tempwindow=tkinter.Tk()
+    tempwindow.geometry("1000x500")
+    scrollbar = Scrollbar(tempwindow)
+    mylist = Listbox(tempwindow, yscrollcommand=scrollbar.set)
+    scrollbar.pack(side=RIGHT, fill=Y)
+    for x in obj.ptweets:
+        str =  x['text']
+        str2=""
+        for y in str:
+            if ord(y) in range(65536):
+                str2+=y
+        mylist.insert(END, str2)
+
+    mylist.pack(side=LEFT, fill=BOTH, expand=True)
+    scrollbar.config(command=mylist.yview)
+    #Label(tempwindow, text=str2, font=("Arial", 18)).place(x=0, y=0)
+    tempwindow.mainloop()
+
+def seeneg():
+    tempwindow=tkinter.Tk()
+    tempwindow.geometry("1000x500")
+    scrollbar = Scrollbar(tempwindow)
+    mylist = Listbox(tempwindow, yscrollcommand=scrollbar.set)
+    scrollbar.pack(side=RIGHT, fill=Y)
+    for x in obj.ntweets:
+        str =  x['text']
+        str2=""
+        for y in str:
+            if ord(y) in range(65536):
+                str2+=y
+        mylist.insert(END, str2)
+
+    mylist.pack(side=LEFT, fill=BOTH, expand=True)
+    scrollbar.config(command=mylist.yview)
+    #Label(tempwindow, text=str2, font=("Arial", 18)).place(x=0, y=0)
+    tempwindow.mainloop()
+
+def seeneutral():
+    tempwindow=tkinter.Tk()
+    tempwindow.geometry("1000x500")
+    scrollbar = Scrollbar(tempwindow)
+    mylist = Listbox(tempwindow, yscrollcommand=scrollbar.set)
+    scrollbar.pack(side=RIGHT, fill=Y)
+    for x in obj.otweets:
+        str =  x['text']
+        str2=""
+        for y in str:
+            if ord(y) in range(65536):
+                str2+=y
+        mylist.insert(END, str2)
+
+    mylist.pack(side=LEFT, fill=BOTH, expand=True)
+    scrollbar.config(command=mylist.yview)
+    #Label(tempwindow, text=str2, font=("Arial", 18)).place(x=0, y=0)
+    tempwindow.mainloop()
+
 
 
 window = tkinter.Tk()
