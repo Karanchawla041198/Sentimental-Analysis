@@ -5,24 +5,31 @@ import graph
 from TwitterClient import *
 from graph import *
 import pickle
+import nlp
 
 def head():
-    headf = Frame(window, bg="red",height=120, width=1000)
+    headf = Frame(window,height=120, width=1000)
     headf.place(x=0,y=0)
-    heading = Label(headf, text="Sentimental Analysis",font=('Arial Bold',30))
-    heading.place(x=300,y=35)
+    logo = Image.open("Icons/logo.png")
+    #logo = Image.resize((50, 50), Image.ANTIALIAS)
+    test = ImageTk.PhotoImage(logo)
+    label1 = tkinter.Label(image=test)
+    label1.image = test
+    label1.place(x=100,y=0)
+    #heading = Label(headf, text="Sentimental Analysis",font=('Arial Bold',30))
+    #heading.place(x=300,y=35)
 
 def nav():
-    navf = Frame(window, bg="yellow", height=580, width=180)
+    navf = Frame(window, height=580, width=180)
     navf.place(x=0,y=120)
 
     b1=Button(navf,text="Home",width=23,height=9,bg="#b6ddfc",activebackground="#8bcafc",command=generatehomef)
     b1.place(x=2,y=0)
-    b2 = Button(navf, text="About",width=23,height=9,bg="#b6ddfc",activebackground="#8bcafc",command=generateaboutf)
+    b2 = Button(navf, text="NLP",width=23,height=9,bg="#b6ddfc",activebackground="#8bcafc",command=generatenlpf)
     b2.place(x=2,y=145)
     b3 = Button(navf, text="Twitter Sentiment",width=23,height=9,bg="#b6ddfc",activebackground="#8bcafc",command=generatetwitterf)
     b3.place(x=2,y=290)
-    b4 = Button(navf, text="Trend Sentiemnt",width=23,height=9,bg="#b6ddfc",activebackground="#8bcafc",command=generatetrendsf)
+    b4 = Button(navf, text="Twitter Compare",width=23,height=9,bg="#b6ddfc",activebackground="#8bcafc",command=generatetrendsf)
     b4.place(x=2,y=435)
 
 
@@ -32,10 +39,35 @@ def generatehomef():
     Label(homef,text="This is home page").place(x=0,y=0)
 
 
-def generateaboutf():
-    aboutf = Frame(window, bg="pink", height=580, width=820)
-    aboutf.place(x=180, y=120)
-    Label(aboutf, text="This is About page").place(x=0, y=0)
+def generatenlpf():
+    global nlpf
+    nlpf = Frame(window, bg="pink", height=580, width=820)
+    nlpf.place(x=180, y=120)
+    Label(nlpf, text="This is About page").place(x=0, y=0)
+    Label(nlpf, text="Natural Language Processing", font=("Arial", 30)).place(x=170, y=10)
+    Label(nlpf, text="Enter Text: ", font=("Arial", 18)).place(x=120, y=150)
+    global text
+    text = Text(nlpf, height = 8, width = 40, bg = "light yellow")
+    text.place(x=300, y=150)
+    #global textentry
+    #textentry = tkinter.Entry(nlpf, font=("Arial", 18))
+    #textentry.place(x=380, y=150)
+    #print(type(text))
+    B = Button(nlpf, text="Analyse", font=("Arial", 18), command=analyse)
+    B.place(x=300, y=300)
+    Label(nlpf, text="Rating: ", font=("Arial", 18)).place(x=120, y=400)
+
+
+def analyse():
+    string=text.get("1.0",END)
+    #print(string)
+    rating=nlp.getsentiment(string)
+    #print(rating)
+    if rating <10:
+        res = "0{}/10".format(rating)
+    else:
+        res="10/10"
+    Label(nlpf, text=res.format(rating), font=("Arial", 18)).place(x=220, y=400)
 
 def generatetwitterf():
     global twitterf
@@ -61,9 +93,44 @@ def generatetwitterf():
     B.place(x=300, y=280)
 
 def generatetrendsf():
+    global trendf
     trendf = Frame(window, bg="green", height=580, width=820)
     trendf.place(x=180, y=120)
     Label(trendf, text="This is Trend page").place(x=0, y=0)
+    Label(trendf, text="Tweets Comparison", font=("Arial", 30)).place(x=230, y=10)
+
+    global topic1entry
+    global topic2entry
+
+    Label(trendf, text="Topic 1: ", font=("Arial", 18)).place(x=140, y=150)
+    topic1entry = tkinter.Entry(trendf, font=("Arial", 18))
+    topic1entry.place(x=380, y=150)
+
+    Label(trendf, text="Topic 2: ", font=("Arial", 18)).place(x=140, y=200)
+    topic2entry = tkinter.Entry(trendf, font=("Arial", 18))
+    topic2entry.place(x=380, y=200)
+
+    B = Button(trendf, text="Get Tweets", font=("Arial", 18), command=compare)
+    B.place(x=300, y=280)
+
+
+def compare():
+    topic1 = topic1entry.get()
+    topic2 = topic2entry.get()
+    statement = Label(trendf, text="", font=("Arial", 11))
+    if topic1=="" or topic2=="":
+        statement=Label(trendf, text="Please Enter All the values    ", font=("Arial", 11)).place(x=300,y=250)
+        return
+
+    global obj1
+    global obj2
+
+    obj1 = twitterObj(topic1, 100)
+    obj2 = twitterObj(topic2, 100)
+
+    p1 = twopie(len(obj1.ptweets), len(obj1.ntweets), len(obj1.ntweets),len(obj2.ptweets), len(obj2.ntweets), len(obj2.ntweets))
+
+
 
 
 def generateObj():
@@ -93,7 +160,8 @@ def generateObj():
 
 
 def seepie():
-    p=pie(len(obj.ptweets),len(obj.ntweets),len(obj.ntweets))
+    name = keywordentry.get()
+    p=pie(name,len(obj.ptweets),len(obj.ntweets),len(obj.ntweets))
 
 
 def gengraph():
